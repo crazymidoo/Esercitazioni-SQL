@@ -100,3 +100,14 @@ INSERT INTO Artista (Codice_Artista, Nome_Arte, Nazionalita, Genere_Musicale, Co
 INSERT INTO Acquisto (Codice_Acquisto, Numero_Biglietti, Data_Acquisto) VALUES
 (1, 2, '2025-11-01'),
 (2, 1, '2025-11-03');
+
+
+
+
+
+
+
+--Query1: Trova il nome e la nazionalità di tutti gli artisti di genere 'Rock'.
+Select Nome, Nazionalita
+From Artista
+Where Genere_Musicale="Rock"
