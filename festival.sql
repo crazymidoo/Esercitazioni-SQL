@@ -103,11 +103,11 @@ INSERT INTO Acquisto (Codice_Acquisto, Numero_Biglietti, Data_Acquisto) VALUES
 
 
 
-
-
-
-
---Query1: Trova il nome e la nazionalità di tutti gli artisti di genere 'Rock'.
-Select Nome, Nazionalita
+Select Nome_Arte, Nazionalita
 From Artista
-Where Genere_Musicale="Rock"
+Where Genere_Musicale = 'Rock';
+
+Select Data, Orario_Inizio
+From Spettacolo S
+Join Palco P on S.Codice_Palco = P.Codice_Palco
+Where P.Nome = 'Main Stage';
