@@ -1,48 +1,6 @@
---Creazione Tabella Artista
-Create Table Artista(
-    Codice_Artista Int Primary Key,
-    Nome_Arte Varchar(40) Not Null,
-    Nazionalita Varchar(40) Not Null,
-    Genere_Musicale Varchar(40) Not Null,
-    Codice_Spettacolo Int,
-    Foreign Key (Codice_Spettacolo) 
-    References Spettacolo (Codice_Spettacolo)
-);
-
---Creazione Tabella Spettacolo
-Create Table Spettacolo(
-    Codice_Spettacolo Int Primary Key,
-    Data Date Not Null,
-    Orario_Inizio Time Not Null,
-    Durata Int Not Null,
-    Codice_Palco Int,
-    Codice_Biglietto Int,
-    Foreign Key (Codice_Palco)
-    References Palco (Codice_Palco),
-    --Foreign Key con Biglietto
-    Foreign Key (Codice_Biglietto)
-    References Biglietto(Codice_Biglietto)
-);
-
---Creazione Tabella Palco
-Create Table Palco(
-    Codice_Palco Int Primary Key,
-    Nome Varchar(40) Not Null,
-    Capienza_Massima Int Not Null
-);
-
---Creazione Tabella Biglietto
-Create Table Biglietto(
-    Codice_Biglietto Int Primary Key,
-    Prezzo Int Not Null,
-    Tipo Varchar(40) Not Null,
-    Validita Date Not Null,
-    Codice_Cliente Int,
-    Foreign Key (Codice_Cliente)
-    References Clienti (Codice_Fiscale)
-);
-
---Creazione Tabella Clienti
+-- ======================================
+-- Creazione Tabella Clienti
+-- ======================================
 Create Table Clienti(
     Codice_Fiscale Varchar(16) Primary Key,
     Nome Varchar(40) Not Null,
@@ -50,12 +8,61 @@ Create Table Clienti(
     Email Varchar(50) Not Null
 );
 
---Creazione Tabella Acquista(Relazione)
+-- ======================================
+-- Creazione Tabella Palco
+-- ======================================
+Create Table Palco(
+    Codice_Palco Int Primary Key,
+    Nome Varchar(40) Not Null,
+    Capienza_Massima Int Not Null
+);
+
+-- ======================================
+-- Creazione Tabella Biglietto
+-- ======================================
+Create Table Biglietto(
+    Codice_Biglietto Int Primary Key,
+    Prezzo Int Not Null,
+    Tipo Varchar(40) Not Null,
+    Validita Date Not Null,
+    Codice_Cliente Varchar(16),
+    Foreign Key (Codice_Cliente) References Clienti(Codice_Fiscale)
+);
+
+-- ======================================
+-- Creazione Tabella Spettacolo
+-- ======================================
+Create Table Spettacolo(
+    Codice_Spettacolo Int Primary Key,
+    Data Date Not Null,
+    Orario_Inizio Time Not Null,
+    Durata Int Not Null,
+    Codice_Palco Int,
+    Codice_Biglietto Int,
+    Foreign Key (Codice_Palco) References Palco(Codice_Palco),
+    Foreign Key (Codice_Biglietto) References Biglietto(Codice_Biglietto)
+);
+
+-- ======================================
+-- Creazione Tabella Artista
+-- ======================================
+Create Table Artista(
+    Codice_Artista Int Primary Key,
+    Nome_Arte Varchar(40) Not Null,
+    Nazionalita Varchar(40) Not Null,
+    Genere_Musicale Varchar(40) Not Null,
+    Codice_Spettacolo Int,
+    Foreign Key (Codice_Spettacolo) References Spettacolo(Codice_Spettacolo)
+);
+
+-- ======================================
+-- Creazione Tabella Acquisto
+-- ======================================
 Create Table Acquisto(
     Codice_Acquisto Int Primary Key,
     Numero_Biglietti Int Not Null,
-    Data_Acquisto date Not Null
-)
+    Data_Acquisto Date Not Null
+);
 
 -- ======================================
 -- Popolamento tabella Clienti
@@ -92,7 +99,8 @@ INSERT INTO Spettacolo (Codice_Spettacolo, Data, Orario_Inizio, Durata, Codice_P
 -- ======================================
 INSERT INTO Artista (Codice_Artista, Nome_Arte, Nazionalita, Genere_Musicale, Codice_Spettacolo) VALUES
 (1, 'DJ Rossi', 'Italiana', 'EDM', 1),
-(2, 'Lucia Star', 'Italiana', 'Pop', 2);
+(2, 'Lucia Star', 'Italiana', 'Pop', 2),
+(3, 'Rocky Band', 'Americana', 'Rock', 1);
 
 -- ======================================
 -- Popolamento tabella Acquisto
@@ -101,13 +109,25 @@ INSERT INTO Acquisto (Codice_Acquisto, Numero_Biglietti, Data_Acquisto) VALUES
 (1, 2, '2025-11-01'),
 (2, 1, '2025-11-03');
 
-
-
+-- ======================================
+-- Query1: Trova il nome e la nazionalità di tutti gli artisti di genere 'Rock'.
+-- ======================================
 Select Nome_Arte, Nazionalita
 From Artista
 Where Genere_Musicale = 'Rock';
 
-Select Data, Orario_Inizio
+-- ======================================
+-- Query2: Trova la data e l'ora di inizio di tutti gli spettacoli tenuti sul palco chiamato 'Main Stage'.
+-- ======================================
+Select S.Data, S.Orario_Inizio
 From Spettacolo S
 Join Palco P on S.Codice_Palco = P.Codice_Palco
 Where P.Nome = 'Main Stage';
+
+-- ======================================
+-- Query3: Trova il nome e cognome di tutti i clienti che hanno acquistato un biglietto di tipo 'Abbonamento 3 giorni'.
+-- ======================================
+Select C.Nome, C.Cognome
+From Clienti C
+Join Biglietto B ON C.Codice_Fiscale = B.Codice_Cliente
+Where B.Tipo = 'Abbonamento 3 giorni';
