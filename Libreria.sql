@@ -1,5 +1,5 @@
 --Creazione Tabella Libro
-Create Table libro(
+Create Table Libro(
     Id_Libro Int Primary Key,
     Titolo Varchar(30) Not Null,
     Genere Varchar(20) Not Null,
@@ -12,4 +12,19 @@ Create Table Autore(
     Nome Varchar(20) Not Null,
     Cognome Varchar(20) Not Null,
     Data_Nascita Date Not null
+)
+
+--Creazione Tabella Ordine
+Create Table Ordine(
+    Id_ordine Int Primary Key,
+    Data_Ordine Date Not Null,
+    Totale Int Not Null
+)
+
+--Creazione Tabella Cliente
+Create Table Cliente(
+    Id_Cliente Int Primary Key,
+    Nome Varchar(20) Not Null,
+    Cognome Varchar(20) Not Null,
+    Email Varchar(50) Not Null
 )
